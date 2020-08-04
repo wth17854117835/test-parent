@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+        Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。
+-->
+<!--
+    monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。
+    ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+          All:最低等级的，用于打开所有日志记录.
+　　　　　                   Trace:是追踪，就是程序推进一下.
+　　　　　　                 Debug:指出细粒度信息事件对调试应用程序是非常有帮助的.
+　　　　　                   Info:消息在粗粒度级别上突出强调应用程序的运行过程.
+　　　　　                　 Warn:输出警告及warn以下级别的日志.
+　　　　　　                 Error:输出错误信息日志.
+　　　　　　                 Fatal:输出每个严重的错误事件将会导致应用程序的退出的日志.
+　　　　　　                 OFF:最高等级的，用于关闭所有日志记录.
+-->
+<configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <property name="log.path" value="logs" />
+        <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 method 执行方法名 -->
+        <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %-5method - %msg%n" />
+        <!-- each file should be at most maxFileSize-100MB, keep maxHistory-60 days worth of history, but at most totalSizeCap-20GB -->
+        <property name="log.maxFileSize" value="1000MB" />
+        <property name="log.maxHistory" value="60" />
+        <property name="log.totalSizeCap" value="3000MB" />
+        <!-- Mybatis查询的入参出参，用于排查问题 -->
+        <property name="log.dao.mapper" value="com.sitech.wth.entity.mapper" />
+    </Properties>
+
+    <!--先定义所有的appender-->
+    <Appenders>
+        <!--这个输出控制台的配置-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--这个都知道是输出日志的格式-->
+            <PatternLayout pattern="[test-app] %d{yyyy-MM-dd HH:mm:ss:SS}|%t|%-5level|%class{36}|%msg%xEx%n"/>
+        </Console>
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+        <File name="log" fileName="${log.path}/test-app.log" append="false">
+            <PatternLayout pattern="${log.pattern}"/>
+            <!--<PatternLayout pattern="[test-app] %d{yyyy-MM-dd HH:mm:ss:SS}|%t|%-5level|%class{36}|%msg%xEx%n"/>-->
+        </File>
+        <!-- 这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <SizeBasedTriggeringPolicy size="50MB"/>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <Loggers>
+        <!--建立一个默认的root的logger-->
+        <root level="debug">
+            <appender-ref ref="Console" level="debug"/>
+            <AppenderRef ref="log" level="debug" />
+            <appender-ref ref="RollingFile"/>
+        </root>
+
+        <logger name="com.sitech.wth" level="debug" additivity="false">
+            <AppenderRef ref="Console" level="debug" />
+            <AppenderRef ref="log" level="debug" />
+        </logger>
+    </Loggers>
+
+</configuration>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- 注意这个插件是增量向文件中添加，会重复 -->
+
+<generatorConfiguration>
+
+    <!-- 引入配置文件
+    <properties resource="jdbc.properties"/>  -->
+
+    <!--数据库驱动路径-->
+    <!--<classPathEntry location="D:\TSBrowserDownloads\maven\mavenSource\mysql\mysql-connector-java\5.1.41\mysql-connector-java-5.1.41.jar" />-->
+    <classPathEntry location="D:\maven-repository-sitech\repository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar"/>
+    <!--<classPathEntry location="E:\workspace\北京-研发-文档\内存库\JDBC_DMDB_WIN\JDBC_DMDB\dmdbjdbc.jar" />-->
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="true"/> <!-- 是否生成注释代时间戳-->
+        </commentGenerator>
+
+        <jdbcConnection
+            driverClass="com.mysql.cj.jdbc.Driver"
+            connectionURL="jdbc:mysql://localhost:3306/jcf3_db?serverTimezone=GMT"
+            userId="root"
+            password="root">
+        </jdbcConnection>
+        <!--<jdbcConnection driverClass="com.sitech.dmdb.Driver"-->
+        <!--connectionURL="jdbc:e-mobile://172.18.231.5:9256/dmdb"-->
+        <!--userId="dbobdsadm" password="dbobdsadm">-->
+        <!--</jdbcConnection>-->
+        <!--<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"-->
+                        <!--connectionURL="jdbc:mysql://172.29.21.42:3306/dbobdsadm?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false"-->
+                        <!--userId="dbobdsadm" password="dbobdsadm">-->
+        <!--</jdbcConnection>-->
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- 生成实体类的包名和位置 注意targetProject的值为实体类放在工程中具体位置的相对路径，-->
+        <javaModelGenerator targetPackage="com.sitech.wth.entity.mapdto"
+                            targetProject="src/main/java">
+            <!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!--XML映射文件,生成的位置（目标包）,源代码文件夹-->
+        <sqlMapGenerator targetPackage="mybatis" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!--XML对应的Mapper类-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.sitech.wth.entity.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!--下面是数据库表名和项目中需要生成类的名称，建议和数据库保持一致，如果有多个表，添加多个节点即可   enable*ByExample
+                是否生成 example类  schema="dbobdsadm"-->
+        <!--<table  tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false" enableSelectByExample="true" enableUpdateByExample="false" enableDeleteByExample="false">-->
+        <!-- TODO 生成的表名没有带属主 -->
+        <table tableName="fruits" domainObjectName="Fruit">
+            <!-- 默认为false，如果设置为true，在生成的SQL中，table名字不会加上catalog或schema； -->
+            <property name="ignoreQualifiersAtRuntime" value="false"/>
+        </table>
+
+        <table tableName="user_info" domainObjectName="UserInfo" />
+    </context>
+
+</generatorConfiguration>

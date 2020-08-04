@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sitech.wth</groupId>
+    <artifactId>test-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>测试::构建</name>
+    <packaging>pom</packaging>
+
+    <!--<properties>-->
+        <!--<jcf.version>3.3.0.SNAPSHOT</jcf.version>-->
+    <!--</properties>-->
+
+    <modules>
+        <module>test-app</module>
+        <module>test-generator</module>
+        <module>test-component</module>
+        <module>test-physical</module>
+    </modules>
+
+    <dependencies>
+
+        <!--引入swagger时需要引入jackjson-->
+        <dependency>
+            <groupId>com.sitech.ijcf</groupId>
+            <artifactId>ijcf-boot-starter-jackjson</artifactId>
+        </dependency>
+
+        <!--jcf框架集成的swagger-->
+        <dependency>
+            <groupId>com.sitech.ijcf</groupId>
+            <artifactId>ijcf-boot-starter-swagger</artifactId>
+        </dependency>
+        <!--swagger核心依赖-->
+        <!--<dependency>-->
+            <!--<groupId>io.springfox</groupId>-->
+            <!--<artifactId>springfox-swagger2</artifactId>-->
+        <!--</dependency>-->
+        <!--自定义swagger的ui-->
+        <!--<dependency>-->
+            <!--<groupId>com.sitech.ijcf</groupId>-->
+            <!--<artifactId>swagger-bs-ui</artifactId>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.sitech.ijcf</groupId>
+                <artifactId>ijcf-boot-dependencies</artifactId>
+                <!--<version>${jcf.version}</version>-->
+                <version>3.3.0.SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.springframework.cloud</groupId>-->
+                <!--<artifactId>spring-cloud-starter-parent</artifactId>-->
+                <!--<version>${spring-cloud.version}</version>-->
+                <!--<type>pom</type>-->
+                <!--<scope>import</scope>-->
+            <!--</dependency>-->
+        </dependencies>
+    </dependencyManagement>
+
+</project>

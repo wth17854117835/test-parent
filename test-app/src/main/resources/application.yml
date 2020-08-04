@@ -1,0 +1,41 @@
+server:
+  port: 8771
+spring:
+  application:
+    name: test-app
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  config: classpath:log4j2-spring.xml
+  level:
+    com.sitech.ijcf.boot.core: info
+#    com.sitech.mybatis.mapper: debug
+#    com.bes.enterprise.web.crane.http11: debug
+
+#jcf数据源
+jcf:
+  datasource:
+    A:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/jcf3_db?serverTimezone=GMT
+      username: root
+      password: root
+      type: com.alibaba.druid.pool.DruidDataSource
+      validationQuery: select 1 from dual;
+      defaultAutoCommit: false
+  route:
+    default-label: A
+  core:
+    databind-json-type: fastjson
+
+#mybatis配置
+mybatis:
+  type-aliases-package: com.sitech.wth.entity.mapdto
+  mapper-locations: classpath:mybatis/*.xml
+ftp:
+  server:
+    host: 172.18.194.147
+    port: 22
+    username: orderapp
+    password: Oup@2019
+    directory: /orderapp/iomApp
