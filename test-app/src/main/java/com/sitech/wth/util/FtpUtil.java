@@ -212,7 +212,15 @@ public class FtpUtil {
             response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
             out.flush();
             out.close();
-            boolean delete = file.delete();
+            if(file.exists()){
+                System.gc();	//加上确保文件能删除，不然可能删不掉
+                boolean delete = file.delete();
+                if(delete){
+                    logger.info("文件：" + file.getAbsolutePath() + " 删除成功！");
+                }
+            } else {
+                logger.debug("文件：" + file.getAbsolutePath() + "不存在！");
+            }
             disConnect(sftp);
         } catch (Exception e) {
             if (logger.isInfoEnabled()) {

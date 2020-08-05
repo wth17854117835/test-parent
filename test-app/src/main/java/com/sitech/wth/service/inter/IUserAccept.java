@@ -14,6 +14,7 @@ import java.util.List;
 public interface IUserAccept {
 
     //查询所有用户信息
+    List<UserInfo> qryAllUser();
     List<UserInfo> qryAllUser(InDTO<PubReq<UserInfo>> userInfo);
 
     //新增用户信息

@@ -10,4 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 public interface IFileManager {
 
     String downloadFile(String filePath , HttpServletResponse response);
+
+    void excelDownload(HttpServletResponse response);
 }

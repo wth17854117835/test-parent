@@ -39,6 +39,15 @@ public class UserAcceptImpl implements IUserAccept {
     @Resource
     UserInfoMapper userInfoMapper;
 
+    @PostMapping("/qryAllUser")
+    @ApiOperation(value = "查询所有用户信息")
+    @Override
+    public List<UserInfo> qryAllUser() {
+        List<UserInfo> userInfos = userInfoMapper.selectAll();
+        logger.debug("======= qryAllUser() end... =======");
+        return userInfos;
+    }
+
     @PostMapping("/qryAll")
     @ApiOperation(value = "查询所有用户信息")
     @Override

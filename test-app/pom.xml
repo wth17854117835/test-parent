@@ -83,10 +83,18 @@
             <scope>test</scope>
         </dependency>
 
+        <!--连接远程主机-->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>0.1.49</version>
+        </dependency>
+
+        <!-- 生成并导出Excel(poi) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
         </dependency>
 
         <!--使用 @ConfigurationProperties注解时添加此依赖-->
