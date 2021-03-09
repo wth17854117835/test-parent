@@ -9,6 +9,17 @@ spring:
     database: 0
     host: 127.0.0.1
     port: 6379
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: 17854117835@163.com
+    password: XPDNKIEJRMEJNCTL
+    default-encoding: utf-8
+    fromMail.address: 17854117835@163.com
+    toMail.address: 824131266@qq.com
+test:
+  schedul:
+    enabled: true
 logging:
   config: classpath:log4j2-spring.xml
   level:

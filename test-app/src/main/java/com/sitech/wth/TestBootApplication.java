@@ -2,6 +2,7 @@ package com.sitech.wth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author: wangth_oup
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description:
  **/
 @SpringBootApplication
+@EnableScheduling
 public class TestBootApplication {
     public static void main(String[] args){
         SpringApplication.run(TestBootApplication.class,args);

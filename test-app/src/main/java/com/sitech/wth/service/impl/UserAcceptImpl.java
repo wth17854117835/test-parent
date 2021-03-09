@@ -1,6 +1,7 @@
 package com.sitech.wth.service.impl;
 
 import com.sitech.ijcf.message6.dt.in.InDTO;
+import com.sitech.wth.aop.ControllerMethodLog;
 import com.sitech.wth.dto.PubReq;
 import com.sitech.wth.entity.mapdto.UserInfo;
 import com.sitech.wth.entity.mapdto.UserInfoExample;
@@ -42,6 +43,7 @@ public class UserAcceptImpl implements IUserAccept {
     @PostMapping("/qryAllUser")
     @ApiOperation(value = "查询所有用户信息")
     @Override
+    @ControllerMethodLog
     public List<UserInfo> qryAllUser() {
         List<UserInfo> userInfos = userInfoMapper.selectAll();
         logger.debug("======= qryAllUser() end... =======");
