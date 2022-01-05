@@ -5,8 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
+
 @ApiModel(description = "用户信息入参")
-public class UserInfo {
+public class UserInfo implements Serializable {
+    private static final long serialVersionUID = -1263415917596388419L;
+
     @ApiModelProperty(required = false, value = "用户ID", dataType = "int", example = "1", position = 0)
     @JSONField(name = "userId")
 //    @JsonProperty("userId")

@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +35,7 @@ import java.util.Random;
 @Service("UserAcceptImplSvc")
 @RequestMapping("/user/api/accept")
 @Api(tags = "用户信息", description = "用户信息管理", position = 1)
+@CacheConfig(cacheNames = "USER_INFO")
 public class UserAcceptImpl implements IUserAccept {
 
     private Logger logger = LogManager.getLogger(HelloWorld.class);
@@ -44,16 +47,19 @@ public class UserAcceptImpl implements IUserAccept {
     @ApiOperation(value = "查询所有用户信息")
     @Override
     @ControllerMethodLog
+//    @Cacheable(value = "USER_INFO", key = "#root.methodName")
+    @Cacheable(cacheNames = "USER_INFO", key = "#root.methodName")
     public List<UserInfo> qryAllUser() {
         List<UserInfo> userInfos = userInfoMapper.selectAll();
         logger.debug("======= qryAllUser() end... =======");
         return userInfos;
     }
 
-    @PostMapping("/qryAll")
+    @PostMapping("/qryUserByCondition")
     @ApiOperation(value = "查询所有用户信息")
+    @Cacheable(cacheNames = "USER_INFO", key = "#root.methodName+#p0")
     @Override
-    public List<UserInfo> qryAllUser(@RequestBody InDTO<PubReq<UserInfo>> in) {
+    public List<UserInfo> qryUserByCondition(@RequestBody InDTO<PubReq<UserInfo>> in) {
         logger.debug("======= qryAllUser() start... =======");
         UserInfo userInfo = Optional.ofNullable(in)
                 .flatMap(m -> Optional.ofNullable(m.getBody()))

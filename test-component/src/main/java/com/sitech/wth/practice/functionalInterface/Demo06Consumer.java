@@ -12,8 +12,11 @@ import java.util.function.Consumer;
  **/
 public class Demo06Consumer {
 
-    public static void method(String name, Consumer<String> consumer){
-        consumer.accept(name);
+//    public static void method(String name, Consumer<String> consumer){
+//        consumer.accept(name);
+//    }
+    public static <T> void method(T t, Consumer<T> consumer){
+        consumer.accept(t);
     }
 
     public static void method2(String name, Consumer<String> con1, Consumer<String> con2){

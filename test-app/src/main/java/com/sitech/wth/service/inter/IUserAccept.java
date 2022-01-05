@@ -15,7 +15,7 @@ public interface IUserAccept {
 
     //查询所有用户信息
     List<UserInfo> qryAllUser();
-    List<UserInfo> qryAllUser(InDTO<PubReq<UserInfo>> userInfo);
+    List<UserInfo> qryUserByCondition(InDTO<PubReq<UserInfo>> userInfo);
 
     //新增用户信息
     int insertUser(UserInfo userInfo);

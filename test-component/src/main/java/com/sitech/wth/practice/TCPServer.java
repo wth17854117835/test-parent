@@ -2,6 +2,7 @@ package com.sitech.wth.practice;
 
 import repackaged.nl.flotsam.xeger.Xeger;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,15 +38,87 @@ public class TCPServer {
 //        }
 
         ServerSocket serverSocket = new ServerSocket(8085);
-        Socket socket = serverSocket.accept();
-        InputStream is = socket.getInputStream();
-        byte[] bytes = new byte[1024];
-        int len = is.read(bytes);
-        System.out.println(new String(bytes,0,len));
+        Socket socket = null;
+        while (true) {
+            //服务器一直监听
+            socket = serverSocket.accept();
+            new ServerThread(socket).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //业务代码
+                    System.out.println("传统方式创建线程-》"+Thread.currentThread().getName());
+                }
+            }).start();
 
-        OutputStream os = socket.getOutputStream();
-        os.write("收到，谢谢".getBytes());
-        socket.close();
-        serverSocket.close();
+            new Thread(() -> {
+                System.out.println("Hello Lambda!");
+            }).start();
+        }
+//        InputStream is = socket.getInputStream();
+////        byte[] bytes = new byte[1024];
+////        int len = is.read(bytes);
+////        System.out.println(new String(bytes,0,len));
+//        DataInputStream dis = new DataInputStream(is);
+//        System.out.println(dis.readUTF());
+//
+//        OutputStream os = socket.getOutputStream();
+//        os.write("收到，谢谢".getBytes());
+//        socket.close();
+//        serverSocket.close();
+    }
+}
+
+class ServerThread extends Thread {
+    InputStream is = null;
+    DataInputStream dis = null;
+    OutputStream os = null;
+    Socket s = null;
+
+    public ServerThread(Socket s) {
+        this.s = s;
+    }
+
+    @Override
+    public void run() {
+        try {
+            is = s.getInputStream();
+            dis = new DataInputStream(is);
+            System.out.println(dis.readUTF());
+
+            os = s.getOutputStream();
+            os.write("收到，谢谢".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(os!=null){
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if(dis!=null){
+                    dis.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if(is!=null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if(s!=null) {
+                    s.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
