@@ -2,10 +2,8 @@ package com.sitech.wth.practice.mashibing.juc;
 
 import org.scalatest.concurrent.SleepHelper;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author: wangth_oup
@@ -14,6 +12,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public class T07_ThreadPoolExecutorTest {
     public volatile static int endNum = -1;
+    private static final AtomicInteger threadNumber = new AtomicInteger(1);
 
     private static class Task implements Runnable {
 
@@ -31,6 +30,13 @@ public class T07_ThreadPoolExecutorTest {
             }
             System.out.println("Task" + i + "结束！");
         }
+
+        @Override
+        public String toString() {
+            return "Task{" +
+                    "i=" + i +
+                    '}';
+        }
     }
 
     public static void main(String[] args) {
@@ -40,6 +46,19 @@ public class T07_ThreadPoolExecutorTest {
                 new LinkedBlockingQueue<>(4),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.DiscardOldestPolicy());
+
+        //自定义线程池（线程工厂、拒绝策略）
+        ThreadPoolExecutor tpe1 = new ThreadPoolExecutor(1,1,
+                60, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(1),
+                (runnable) -> {
+                    Thread thread = new Thread(runnable);
+                    thread.setName("自定义线程--" + threadNumber.getAndIncrement() + "--");
+                    return thread;
+                },
+                (runnable,executors) -> {
+                    System.out.println("无法处理的任务：" + runnable.toString());
+                });
 
         Task t1 = new Task(1);
         tpe.execute(t1);
