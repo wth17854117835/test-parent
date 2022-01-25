@@ -38,7 +38,7 @@ public class T00_CAS {
         }
     }
 
-    //使用AtomicInteger
+    //使用AtomicInteger，内部调用 Unsafe 的 getAndAddInt()
     public static void request() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(5);
         count.incrementAndGet();
