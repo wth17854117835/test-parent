@@ -35,8 +35,8 @@ public class T10_A1Z26 {
                     System.out.print(i);
                     i++;
                     try {
-                        lock.notify();
-                        lock.wait();
+                        lock.notify();//从lock对象的等待队列中随机唤醒一个线程,t2不能立即执行，要等待t1释放object锁之后
+                        lock.wait();//线程t1进入lock对象的等待队列，t1释放锁
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
