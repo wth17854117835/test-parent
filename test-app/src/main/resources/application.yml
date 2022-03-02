@@ -1,5 +1,11 @@
 server:
   port: 8771
+  tomcat:
+    #内嵌tomcat日志，获取访问的IP
+    accesslog:
+      enabled: true
+      directory: D:/test-parents-logs
+#      pattern: %t [%I] %{X-Forwarded-For}i %A %r %s (%D ms)
 spring:
   application:
     name: test-app
@@ -28,6 +34,18 @@ spring:
     default-encoding: utf-8
     fromMail.address: 17854117835@163.com
     toMail.address: 824131266@qq.com
+  # kafka配置
+  kafka:
+    bootstrap-servers: 192.168.206.128:9092
+    producer:
+      retries: 0
+    consumer:
+      group-id: defaultConsumerGroup
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      auto-commit-interval: 20000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 test:
   schedul:
     enabled: false
